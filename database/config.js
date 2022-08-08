@@ -8,7 +8,8 @@ const dbConnection = async() => {
             useUnifiedTopology: true,
             useCreateIndex: true,
             useFindAndModify: false,
-           // ojo con estos objetos, estos se piden para configurar moongose pero me dan error
+            
+           //ojo con estos objetos, estos se piden para configurar moongose pero me dan error
 
         });
             
