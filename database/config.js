@@ -4,11 +4,11 @@ const dbConnection = async() => {
     try {
 
         await mongoose.connect( process.env.MONGODB_CNN, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-            useCreateIndex: true,
-            useFindAndModify: false,
-            
+            // useNewUrlParser: true,
+            // useUnifiedTopology: true,
+            // useCreateIndex: true,
+            // useFindAndModify: false,
+
            //ojo con estos objetos, estos se piden para configurar moongose pero me dan error
 
         });
