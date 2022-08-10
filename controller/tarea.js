@@ -1,29 +1,34 @@
 const { response } = require("express");
 
-const Tarea = require('../models/tarea')
+const Tarea = require('../models/tarea');
 
 const { now } = require('mongoose');
 const { body } = require("express-validator");
+const tarea = require("../models/tarea");
 
 
 const crearTarea = async(req, res = response) => {
-    const {nombreTarea,descripcion, usuarioId } = req.body
+    const {nombreTarea,descripcion, usuarioId,} = req.body
     
     const fechaCreacion = new Date(now()).toISOString()
 
     const tareaDB = new Tarea( {
         nombreTarea,
         descripcion,
-        estado: false,
         usuarioId,
         fechaCreacion,
+       
+       
+
     });
     
-    const data = await Tarea.findOne({ nombreTarea});
+    
+    const data = await Tarea.findOne({ nombreTarea, usuarioId});
     
     if ( data ) {
         return res.status(400).json({
-            msg: `Esta Tarea ${ data.nombreTarea }, ya existe`
+            msg: `Esta Tarea: ${ data.nombreTarea }, ya existe y le pertenece al usuario: ${ data.usuarioId }`
+
         });
         
     }
@@ -34,37 +39,22 @@ const crearTarea = async(req, res = response) => {
     
 } 
 const obtenerTareas = async(req, res = response ) => {
-
-    // const { limite = 5, desde = 0 } = req.query; 
-    const { usuarioId } = req.params;
-
-    const name = 'PRUEBA';
-    const [total, tarea] = await Promise.all([      
-        Tarea.countDocuments(usuarioId),
-        Tarea.find({ usuarioId, nombreTarea: { $regex: `.*${name}.*` }  })  
-        // .skip(Number( desde ))
-        // .limit(Number( limite ))
-    ]);
-
+    const {usuarioId}= req.params;
+    const query = { usuarioId}  
+    const tareas = await Tarea.find( query )
+          
     res.json({
-        total,                          //y los imprimimos en la respuesta
-        tarea
+        tareas
+                             //y los imprimimos en la respuesta
     });
 }
 const editarTareas = async(req, res = response ) => {
     const { id } = req.params;  
-    
-    const fechaCreacion = new Date(now()).toISOString()
+    const data = req.body;
 
-    const data = {
-        ...req.body,
-        fechaCreacion,
-        
-    }
-    
     const tareaDB = await Tarea.findByIdAndUpdate(id, data,  { new: true });
-    
     res.json( tareaDB );
+
     
 }
 

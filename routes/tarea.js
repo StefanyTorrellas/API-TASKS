@@ -3,7 +3,7 @@ const { check } = require('express-validator');
 
 const { validarCampos } = require('../middleware/validar-campos');
 
-const { existeUsuarioPorId, existeTareaPorId } = require('../helpers/db-validator');
+const { existeUsuarioPorId, existeTareaPorId,  } = require('../helpers/db-validator');
 
 const { crearTarea, obtenerTareas, editarTareas, borrarTarea }=require('../controller/tarea');
 
@@ -27,6 +27,7 @@ router.put('/:id', [
     check('nombreTarea','El nombre de la tarea es obligatorio').not().isEmpty(),
     check('descripcion','La descripcion de la tarea es obligatoria').not().isEmpty(),
     check('usuarioId'  ,'usuarioId es obligatorio').custom(existeUsuarioPorId),
+    check('estado'      ,'El estado es obligatorio').not().isEmpty(),
     validarCampos 
 ], editarTareas);
 

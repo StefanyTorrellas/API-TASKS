@@ -1,16 +1,19 @@
-const { response } = require('express');
-const bcryptjs     = require('bcryptjs');
+const { response }   = require('express');
+const bcryptjs       = require('bcryptjs');
+const { now }        = require('mongoose');
+const { v4: uuidv4 } = require('uuid');
 
-const Usuario      = require('../models/user')
+const Usuario        = require('../models/user');
 
 const login = async(req, res= response) => {
     
-    const { correo, password} =req.body;
+    const { correo, password,} =req.body;
 
     try {
 
         //Verificar si el correo existe
         const usuario = await Usuario.findOne({ correo });
+        
         if( !usuario){
             return res.status(400).json({
                 msg:'Usuario y Contraseña no son correctos - CORREO'
@@ -19,9 +22,9 @@ const login = async(req, res= response) => {
 
         //Verificar si mi usuario esta activo en mi base de datps 
       
-        if( usuario.estado){
+        if( !usuario){
         return res.status(400).json({
-                msg:'Usuario y Contraseña no son correctos - estado:false'
+                msg:'Usuario y Contraseña no son correctos'
             })
         }
         //Verificar la contraseña
@@ -32,14 +35,23 @@ const login = async(req, res= response) => {
             });
             
         }
-
+        const token = uuidv4()
         
+        const fechaToken = new Date(now()).toISOString()
 
-        //En este punto deberia verificar el JWT pero no lo voy a requerir en esta practica
+        const filter = { _id: usuario._id.toString() }; //Mirar la documentacion
+        const update = { token: token, fechaToken };
 
-        return res.status(400).json ({
-            msg: 'login ok',
+        const usuarioRes = await Usuario.findOneAndUpdate(filter, update);
+        usuarioRes.token= token;
+
+        return res.status(200).json ({
+            msg: 'Usuario logueado correctamente',
+            usuario: usuarioRes,
+            token,
+                        
         })
+
         
 
     } catch (error) {

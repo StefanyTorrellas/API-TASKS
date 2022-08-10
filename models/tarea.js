@@ -14,7 +14,7 @@ const TareaSchema = Schema({
 
     estado:{
         type: Boolean,
-        default: true,
+        default: false,
         required: true
     },
     usuarioId:{
@@ -30,7 +30,7 @@ const TareaSchema = Schema({
 });
 
 TareaSchema.methods.toJSON = function() {
-    const { __v, estado, ...data  } = this.toObject();
+    const { __v,  ...data  } = this.toObject();
     return data;
 }
 

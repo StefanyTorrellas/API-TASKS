@@ -34,6 +34,13 @@ const existeTareaPorId = async( id ) => {
         
   
 }
+// const tareasOk = async( usuarioId )=>{
+//     //Verificar si las tareas estan lista o por hacer
+//     const tareasListas = await Tarea.findById(usuarioId);
+//     if( !tareasListas){
+//         throw new Error (`La tarea esta por hacer: ${usuarioId}`);
+//     }
+// }
 
 
 
@@ -41,5 +48,6 @@ module.exports = {
     emailExiste,
     existeUsuarioPorId,
     confirmPassword,
-    existeTareaPorId
+    existeTareaPorId,
+    
 }
