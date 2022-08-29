@@ -1,7 +1,7 @@
 const { response }   = require('express');
 const bcryptjs       = require('bcryptjs');
 const { now }        = require('mongoose');
-const { v4: uuidv4 } = require('uuid');
+const { v4: uuidv4, validate} = require('uuid');
 
 const Usuario        = require('../models/user');
 

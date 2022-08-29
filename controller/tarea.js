@@ -1,28 +1,25 @@
 const { response } = require("express");
-
 const Tarea = require('../models/tarea');
-
 const { now } = require('mongoose');
 const { body } = require("express-validator");
-const tarea = require("../models/tarea");
+
 
 
 const crearTarea = async(req, res = response) => {
-    const {nombreTarea,descripcion, usuarioId,} = req.body
-    
+         
+
+    const {nombreTarea,descripcion, usuarioId} = req.body
+
     const fechaCreacion = new Date(now()).toISOString()
 
-    const tareaDB = new Tarea( {
+    const tareaDB = new Tarea({
         nombreTarea,
         descripcion,
         usuarioId,
         fechaCreacion,
        
-       
-
     });
-    
-    
+        
     const data = await Tarea.findOne({ nombreTarea, usuarioId});
     
     if ( data ) {
